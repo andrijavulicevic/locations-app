@@ -12,7 +12,11 @@ const Locations = () => {
   const [isLoading, setIsLoading] = useState(true);
   useEffect(async () => {
     const response = await fetch(API_URL);
-    const locationsResponse = await response.json();
+    const locationsResponse = (await response.json()).map((loc) => ({
+      ...loc,
+      views: 0,
+    }));
+
     setIsLoading(false);
     setLocations(locationsResponse);
   }, []);
@@ -25,7 +29,7 @@ const Locations = () => {
       {!!locations.length && (
         <div className="flex flex-wrap">
           {locations.map((location) => (
-            <div key={location.id} className="w-full md:w-1/3 xl:w-1/5 p-3">
+            <div key={location.id} className="w-full md:w-1/3 xl:w-1/4 pb-5 pr-5">
               <LocationCard location={location} />
             </div>
           ))}
