@@ -21,6 +21,19 @@ const Locations = () => {
     setLocations(locationsResponse);
   }, []);
 
+  const onLocationViewedHandler = (locationId) => {
+    const updatedLocations = locations.map((loc) => {
+      if (loc.id === locationId) {
+        const updatedLocation = { ...loc };
+        updatedLocation.views += 1;
+
+        return updatedLocation;
+      }
+      return loc;
+    });
+    setLocations(updatedLocations);
+  };
+
   return (
     <div>
       {isLoading && <Spinner />}
@@ -30,7 +43,10 @@ const Locations = () => {
         <div className="flex flex-wrap">
           {locations.map((location) => (
             <div key={location.id} className="w-full md:w-1/3 xl:w-1/4 pb-5 pr-5">
-              <LocationCard location={location} />
+              <LocationCard
+                location={location}
+                onLocationViewed={onLocationViewedHandler}
+              />
             </div>
           ))}
         </div>
