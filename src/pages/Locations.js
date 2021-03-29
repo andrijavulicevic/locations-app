@@ -12,15 +12,22 @@ const Locations = () => {
   const { locations, setLocations } = useContext(LocationsContext);
 
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
   useEffect(async () => {
-    const response = await fetch(API_URL);
-    const locationsResponse = (await response.json()).map((loc) => ({
-      ...loc,
-      views: 0,
-    }));
+    try {
+      const response = await fetch(API_URL);
+      const locationsResponse = (await response.json()).map((loc) => ({
+        ...loc,
+        views: 0,
+      }));
 
-    setIsLoading(false);
-    setLocations(locationsResponse);
+      setError(null);
+      setIsLoading(false);
+      setLocations(locationsResponse);
+    } catch (e) {
+      setIsLoading(false);
+      setError('Unable to load location. Please try again later.');
+    }
   }, []);
 
   const [selectedLocation, setSelectedLocation] = useState(null);
@@ -42,12 +49,19 @@ const Locations = () => {
   };
 
   return (
-    <div>
-      {isLoading && <Spinner />}
+    <div className="w-full">
       <div className="py-4 mb-4 border-b">
         <p className="text-gray-600">All locations</p>
         <h1 className="text-xl font-bold">Acme locations</h1>
       </div>
+
+      {isLoading && <Spinner />}
+
+      {error && (
+        <div className="flex text-center text-red-500">
+          <h1 className="text-2xl">{error}</h1>
+        </div>
+      )}
 
       {!!locations.length && (
         <div className="flex flex-wrap px-5">
