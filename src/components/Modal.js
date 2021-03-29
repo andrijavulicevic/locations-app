@@ -1,10 +1,27 @@
 import PropTypes from 'prop-types';
+import { useEffect } from 'react';
 import { Transition } from '@headlessui/react';
 
 import useEscKeyAction from '../hooks/useEscKeyAction';
 
 const Modal = ({ isOpen, onClose, children }) => {
   useEscKeyAction(onClose);
+
+  // to prevent parent scroll while modal is open
+  useEffect(() => {
+    function unlockScroll() {
+      document.body.style.overflow = 'visible';
+    }
+
+    function lockScroll() {
+      document.body.style.overflow = 'hidden';
+    }
+
+    if (isOpen) lockScroll();
+    return () => {
+      unlockScroll();
+    };
+  }, [isOpen]);
 
   return (
     <div
@@ -37,23 +54,21 @@ const Modal = ({ isOpen, onClose, children }) => {
           leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
         >
           <div
-            className={`inline-block align-bottom bg-white rounded-sm text-left overflow-hidden shadow-md transform transition-all 
-              sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-10 md:max-w-7xl h-screen md:h-full lg:max-h-screen-90 overflow-y-auto`}
+            className={`inline-block bg-white rounded-sm text-left overflow-hidden shadow-md transform transition-all 
+               align-middle max-w-sm w-full p-6 md:max-w-7xl h-screen md:h-full lg:max-h-screen-90 overflow-y-auto`}
             role="dialog"
             aria-modal="true"
             aria-labelledby="modal-headline"
-            data-testid="modal"
           >
-            <div className="absolute top-0 right-0 pt-4 pr-4 z-10">
+            <div className="absolute top-0 right-0 pt-5 pr-5 z-10">
               <button
                 type="button"
                 className="text-gray-500 hover:text-gray-500 focus:outline-none focus:text-gray-500 transition ease-in-out duration-150"
                 aria-label="Close"
-                onClick={() => onClose()}
-                data-testid="modal-close-btn"
+                onClick={onClose}
               >
                 <span className="h-6 w-6">
-                  <img src="/images/Close.svg" alt="close" />
+                  <img src="/images/Close.svg" alt="close" className="opacity-60" />
                 </span>
               </button>
             </div>

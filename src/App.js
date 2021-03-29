@@ -5,7 +5,7 @@ import Locations from './pages/Locations';
 function App() {
   return (
     <LocationsStore>
-      <div className="max-w-7xl h-screen mx-auto p-5">
+      <div className="max-w-7xl h-screen flex mx-auto p-5">
         <Locations />
       </div>
     </LocationsStore>
