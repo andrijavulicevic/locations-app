@@ -54,7 +54,7 @@ const Locations = () => {
           {locations.map((location) => (
             <div
               key={location.id}
-              className="w-full md:w-1/3 xl:w-1/4 pb-5 pr-5"
+              className="w-full md:w-1/2 lg:w-1/4 2xl:w-1/5 pb-5 pr-5"
             >
               <LocationCard
                 location={location}

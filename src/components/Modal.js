@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { Transition } from '@headlessui/react';
 
 import useEscKeyAction from '../hooks/useEscKeyAction';
+import usePortal from '../hooks/usePortal';
 
 const Modal = ({ isOpen, onClose, children }) => {
   useEscKeyAction(onClose);
@@ -23,9 +24,9 @@ const Modal = ({ isOpen, onClose, children }) => {
     };
   }, [isOpen]);
 
-  return (
+  return usePortal(
     <div
-      className="fixed z-10 inset-0 overflow-y-auto sm:p-0 sm:flex sm:items-center sm:justify-center"
+      className="fixed z-10 inset-0 overflow-y-auto p-0 flex items-center justify-center"
     >
       <Transition
         show={isOpen}
@@ -54,8 +55,7 @@ const Modal = ({ isOpen, onClose, children }) => {
           leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
         >
           <div
-            className={`inline-block bg-white rounded-sm text-left overflow-hidden shadow-md transform transition-all 
-               align-middle max-w-sm w-full p-6 md:max-w-7xl h-screen md:h-full lg:max-h-screen-90 overflow-y-auto`}
+            className="inline-block bg-white rounded-sm text-left overflow-hidden shadow-md transform transition-all align-middle max-w-sm w-full p-6 md:max-w-7xl h-screen md:h-full lg:max-h-screen-90 overflow-y-auto"
             role="dialog"
             aria-modal="true"
             aria-labelledby="modal-headline"
@@ -76,7 +76,7 @@ const Modal = ({ isOpen, onClose, children }) => {
           </div>
         </Transition>
       </Transition>
-    </div>
+    </div>,
   );
 };
 
